@@ -45,7 +45,6 @@
          */
         var navigate = function(ndx) {
             if(ndx < 0 || ndx > lastIndex) return;
-
             var targetTop = $('[data-scroll-index=' + ndx + ']').offset().top + settings.topOffset + 1;
             $('html,body').animate({
                 scrollTop: targetTop,
@@ -95,6 +94,12 @@
             active = ndx;
             $('[data-scroll-nav]').removeClass(settings.activeClass);
             $('[data-scroll-nav=' + ndx + ']').addClass(settings.activeClass);
+
+            if(ndx != 0) {
+              window.location.hash = ndx;
+            } else {
+              window.location.hash = "";
+            }
         };
 
         /**
@@ -116,7 +121,8 @@
         /*
          * runs methods
          */
-        $(window).on('scroll',watchActive).scroll();
+
+        $(window).on('scroll',watchActive);
 
         $(window).on('keydown', keyNavigation);
 
@@ -124,6 +130,18 @@
             e.preventDefault();
             doScroll(e);
         });
+
+		    var hash = window.location.hash;
+
+        var ndx = hash.length > 0 ? parseInt(hash.substring(1)) : 0;
+
+        if (hash && !isNaN(ndx) && ndx != 0) {
+         	navigate(ndx);
+        } else {
+    			$(window).scroll();
+    		}
+
+
 
     };
 }(jQuery));
