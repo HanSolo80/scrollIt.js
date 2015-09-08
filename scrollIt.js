@@ -22,7 +22,7 @@
         scrollTime: 600,
         activeClass: 'active',
         onPageChange: null,
-        topOffset : 0
+        topOffset: 0
     };
 
     $.scrollIt = function(options) {
@@ -44,7 +44,7 @@
          * sets up navigation animation
          */
         var navigate = function(ndx) {
-            if(ndx < 0 || ndx > lastIndex) return;
+            if (ndx < 0 || ndx > lastIndex) return;
             var targetTop = $('[data-scroll-index=' + ndx + ']').offset().top + settings.topOffset + 1;
             $('html,body').animate({
                 scrollTop: targetTop,
@@ -57,9 +57,9 @@
          *
          * runs navigation() when criteria are met
          */
-        var doScroll = function (e) {
+        var doScroll = function(e) {
             var target = $(e.target).closest("[data-scroll-nav]").attr('data-scroll-nav') ||
-            $(e.target).closest("[data-scroll-goto]").attr('data-scroll-goto');
+                $(e.target).closest("[data-scroll-goto]").attr('data-scroll-goto');
             navigate(parseInt(target));
         };
 
@@ -68,15 +68,15 @@
          *
          * sets up keyboard navigation behavior
          */
-        var keyNavigation = function (e) {
+        var keyNavigation = function(e) {
             var key = e.which;
-            if($('html,body').is(':animated') && (key == settings.upKey || key == settings.downKey)) {
+            if ($('html,body').is(':animated') && (key == settings.upKey || key == settings.downKey)) {
                 return false;
             }
-            if(key == settings.upKey && active > 0) {
+            if (key == settings.upKey && active > 0) {
                 navigate(parseInt(active) - 1);
                 return false;
-            } else if(key == settings.downKey && active < lastIndex) {
+            } else if (key == settings.downKey && active < lastIndex) {
                 navigate(parseInt(active) + 1);
                 return false;
             }
@@ -89,16 +89,16 @@
          * sets the currently active item
          */
         var updateActive = function(ndx) {
-            if(settings.onPageChange && ndx && (active != ndx)) settings.onPageChange(ndx);
+            if (settings.onPageChange && ndx && (active != ndx)) settings.onPageChange(ndx);
 
             active = ndx;
             $('[data-scroll-nav]').removeClass(settings.activeClass);
             $('[data-scroll-nav=' + ndx + ']').addClass(settings.activeClass);
 
-            if(ndx != 0) {
-              window.location.hash = ndx;
+            if (ndx != 0) {
+                window.location.hash = ndx;
             } else {
-              window.location.hash = "";
+                window.location.hash = "";
             }
         };
 
@@ -112,7 +112,7 @@
 
             var visible = $('[data-scroll-index]').filter(function(ndx, div) {
                 return winTop >= $(div).offset().top + settings.topOffset &&
-                winTop < $(div).offset().top + (settings.topOffset) + $(div).outerHeight()
+                    winTop < $(div).offset().top + (settings.topOffset) + $(div).outerHeight()
             });
             var newActive = visible.first().attr('data-scroll-index');
             updateActive(newActive);
@@ -122,24 +122,24 @@
          * runs methods
          */
 
-        $(window).on('scroll',watchActive);
+        $(window).on('scroll', watchActive);
 
         $(window).on('keydown', keyNavigation);
 
-        $('body').on('click','[data-scroll-nav], [data-scroll-goto]', function(e){
+        $('body').on('click', '[data-scroll-nav], [data-scroll-goto]', function(e) {
             e.preventDefault();
             doScroll(e);
         });
 
-		    var hash = window.location.hash;
+        var hash = window.location.hash;
 
         var ndx = hash.length > 0 ? parseInt(hash.substring(1)) : 0;
 
         if (hash && !isNaN(ndx) && ndx != 0) {
-         	navigate(ndx);
+            navigate(ndx);
         } else {
-    			$(window).scroll();
-    		}
+            $(window).scroll();
+        }
 
 
 
