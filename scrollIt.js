@@ -10,7 +10,7 @@
     'use strict';
 
     var pluginName = 'ScrollIt',
-        pluginVersion = '1.0.3';
+        pluginVersion = '1.0.4';
 
     /*
      * OPTIONS
